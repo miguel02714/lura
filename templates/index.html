@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LURA RAG Console - Nebula Edition</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* === VARIÁVEIS DE TEMA (NEBULA) === */
+        :root {
+            --bg-darkest: #000000; 
+            --bg-sidebar: #060606; 
+            --bg-chat-main: #0a0a0a; 
+            --bg-input-field: #141414; 
+            --color-text-main: #FFFFFF; 
+            --color-text-muted: #888888; 
+            --color-accent-primary: #9933FF; /* Roxo Nebulosa */
+            --color-border: #1a1a1a; 
+            --font-main: 'Poppins', sans-serif;
+            --radius-default: 6px;
+        }
+
+        /* Reset e Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-main);
+            color: var(--color-text-main);
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-darkest);
+            overflow: hidden;
+        }
+
+        /* ------------------------------
+           1. Sidebar (Fontes de Dados RAG) - RESTAURADA
+        ------------------------------ */
+        .sidebar {
+            width: 300px;
+            background-color: var(--bg-sidebar);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            flex-shrink: 0;
+            border-right: 1px solid var(--color-border);
+        }
+
+        .sidebar-header {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--color-accent-primary);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-shadow: 0 0 5px rgba(153, 51, 255, 0.5);
+        }
+
+        .data-sources {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .data-sources::-webkit-scrollbar { width: 4px; }
+        .data-sources::-webkit-scrollbar-thumb { 
+            background: rgba(153, 51, 255, 0.4); 
+            border-radius: 2px;
+        }
+
+        .source-item {
+            padding: 10px 12px;
+            border-radius: var(--radius-default);
+            font-size: 0.9em;
+            cursor: pointer;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: background-color 0.2s, border-left 0.2s;
+            color: var(--color-text-muted);
+            border-left: 3px solid transparent;
+            font-weight: 300;
+        }
+        .source-item.active {
+            border-left: 3px solid var(--color-accent-primary);
+            background-color: rgba(153, 51, 255, 0.1);
+            color: var(--color-text-main);
+            font-weight: 500;
+        }
+        .source-item i { margin-right: 8px; color: inherit; }
+
+
+        /* ------------------------------
+           2. Área Central do Chat - RESTAURADA
+        ------------------------------ */
+        .chat-container {
+            flex-grow: 1;
+            background-color: var(--bg-chat-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .chat-area {
+            width: 100%;
+            max-width: 1000px;
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 30px 40px;
+            padding-bottom: 140px; 
+        }
+
+        /* Mensagens */
+        .message {
+            display: flex;
+            padding: 25px 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .message:last-of-type { border-bottom: none; }
+
+        .message-icon {
+            width: 40px; 
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1em;
+            margin-right: 25px;
+            flex-shrink: 0;
+            font-weight: 600;
+        }
+
+        .icon-user {
+            background: #222;
+            color: var(--color-text-main);
+            border: 1px solid #333;
+        }
+
+        .icon-bot {
+            background: var(--color-accent-primary);
+            color: var(--bg-darkest);
+        }
+
+        .message-content {
+            line-height: 1.8;
+            font-size: 1em;
+            font-weight: 300;
+        }
+        .message-content strong { color: var(--color-accent-primary); font-weight: 500; }
+
+        /* Indicadores de Processo RAG - ESSENCIAIS */
+        .rag-status {
+            font-size: 0.9em;
+            color: var(--color-accent-primary);
+            margin-top: 15px;
+            font-weight: 400;
+            animation: glow-pulse 1s infinite alternate;
+        }
+        .rag-status.complete {
+            color: #4CAF50; /* Verde para Sucesso */
+            animation: none;
+            font-style: normal;
+        }
+        .rag-status.error, .rag-status.falha {
+            color: #f44336; /* Vermelho para Falha/Erro */
+            animation: none;
+            font-style: italic;
+        }
+
+        @keyframes glow-pulse {
+            0% { text-shadow: 0 0 3px rgba(153, 51, 255, 0.3); opacity: 0.7; }
+            100% { text-shadow: 0 0 8px rgba(153, 51, 255, 0.8); opacity: 1; }
+        }
+
+        /* Animação de digitação */
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            color: var(--color-accent-primary);
+        }
+
+        /* ------------------------------
+           3. Área de Input
+        ------------------------------ */
+        .input-area-wrapper {
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            max-width: 1000px;
+            padding: 20px 40px;
+            background: linear-gradient(to top, var(--bg-chat-main) 70%, transparent 100%);
+            z-index: 10;
+        }
+        
+        .input-area {
+            display: flex;
+            align-items: flex-end;
+            width: 100%;
+            background-color: var(--bg-input-field);
+            border-radius: 12px;
+            padding: 12px 20px;
+            border: 1px solid var(--color-border);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .input-area:focus-within {
+            border-color: var(--color-accent-primary);
+            box-shadow: 0 0 15px rgba(153, 51, 255, 0.5);
+        }
+
+        #user-input {
+            flex-grow: 1;
+            border: none;
+            outline: none;
+            background: none;
+            resize: none;
+            min-height: 25px;
+            max-height: 120px;
+            padding: 8px 0;
+            font-size: 1em;
+            line-height: 1.5;
+            color: var(--color-text-main);
+            font-weight: 300;
+        }
+
+        #send-btn {
+            background: var(--color-accent-primary);
+            border: none;
+            color: var(--bg-darkest);
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: opacity 0.2s, transform 0.1s;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+        #send-btn:hover:not(:disabled) {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(153, 51, 255, 0.4);
+        }
+        #send-btn:disabled {
+            cursor: not-allowed;
+            background: #333;
+            color: #666;
+        }
+
+        .footer-note {
+            font-size: 0.7em;
+            color: var(--color-text-muted);
+            text-align: center;
+            padding-top: 10px;
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+   
+
+    <div class="chat-container">
+        
+        <div class="chat-area" id="chat-area">
+            <div class="message">
+                <div class="message-icon icon-bot">AI</div>
+                <div class="message-content">
+                    Bem-vindo à Lura. Sou a chatbot da LURA, alimentado por documentos internos e conhecimento geral. Minha função é extrair e sintetizar informações precisas das fontes ativas. Como posso auxiliar em sua pesquisa?
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area-wrapper">
+            <div class="input-area">
+                <textarea id="user-input" rows="1" placeholder="Consultar base de conhecimento..." autofocus></textarea>
+                <button id="send-btn" disabled>
+                    BUSCAR
+                </button>
+            </div>
+            <div class="footer-note">
+                Resposta baseada na documentação LURA RAG v1.0. O LURA  foi feito em RAG e pode conter erros.
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const input = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatArea = document.getElementById('chat-area');
+        let isTyping = false;
+        let lastBotMessageContentElement = null;
+
+        function adjustTextareaHeight() {
+            input.style.height = 'auto';
+            input.style.height = input.scrollHeight + 'px';
+            sendBtn.disabled = input.value.trim() === '' || isTyping;
+        }
+
+        function scrollToBottom() {
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        /**
+         * Adiciona uma mensagem ao chat.
+         * Retorna o elemento de conteúdo para que possamos atualizar a resposta do bot.
+         */
+        function addMessage(sender, text, isHtml = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            
+            const iconClass = sender === 'user' ? 'icon-user' : 'icon-bot';
+            const iconContent = sender === 'user' ? '<i class="fa-solid fa-user-gear"></i>' : 'AI';
+
+            messageDiv.innerHTML = `
+                <div class="message-icon ${iconClass}">${iconContent}</div>
+                <div class="message-content"></div>
+            `;
+            
+            const contentElement = messageDiv.querySelector('.message-content');
+            if (isHtml) {
+                 contentElement.innerHTML = text;
+            } else {
+                 contentElement.textContent = text;
+            }
+            
+            chatArea.appendChild(messageDiv);
+            scrollToBottom();
+            return contentElement;
+        }
+
+        /**
+         * FUNÇÃO CHAVE: Conecta-se ao backend Flask (/api/chat) e gerencia os status RAG.
+         */
+        async function fetchRAGResponse(userMessage) {
+            if (isTyping) return;
+            isTyping = true;
+            
+            // 1. Inicia o indicador de status de busca (Retrieval)
+            lastBotMessageContentElement = addMessage('bot', `<p class="rag-status"><i class="fa-solid fa-bolt fa-spin"></i> BUSCANDO no Backend Flask... (Retrieval)</p>`, true);
+
+            try {
+                // 2. Chama a API Flask
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: userMessage })
+                });
+
+                const data = await response.json();
+                
+                // Trata status de FALHA ou ERRO retornado pelo Flask
+                if (data.status === "ERRO INTERNO" || data.status === "ERRO" || data.status === "FALHA") {
+                    startTyping(data.response, data.source, data.status);
+                    return;
+                }
+
+                // 3. Atualiza o status para GERAÇÃO
+                lastBotMessageContentElement.innerHTML = `<p class="rag-status"><i class="fa-solid fa-atom fa-spin"></i> SUCESSO. Gerando Síntese dos dados... (Generation)</p>`;
+                
+                // 4. Inicia o efeito de digitação com a resposta final
+                await new Promise(resolve => setTimeout(resolve, 800)); 
+                startTyping(data.response, data.source, data.status);
+
+            } catch (error) {
+                console.error("Erro ao comunicar com a API:", error);
+                startTyping("ERRO: Não foi possível conectar ao servidor Flask. Verifique se o 'app.py' está ativo.", "Sistema", "ERRO");
+            }
+        }
+
+        /**
+         * Simula o efeito de digitação e adiciona o status final RAG.
+         */
+        function startTyping(botResponse, source, status) {
+            lastBotMessageContentElement.innerHTML = ''; // Limpa o status temporário
+            let charIndex = 0;
+            
+            const finalStatus = document.createElement('p');
+            finalStatus.className = `rag-status ${status.toLowerCase()}`;
+            
+            function typeChar() {
+                if (charIndex < botResponse.length) {
+                    // Adiciona a resposta principal char por char
+                    lastBotMessageContentElement.innerHTML += botResponse.charAt(charIndex);
+                    charIndex++;
+                    scrollToBottom();
+                    setTimeout(typeChar, 25); // Velocidade de digitação
+                } else {
+                    // Adiciona o status final RAG
+                    const icon = (status === "COMPLETO") ? 'fa-check' : 'fa-times';
+                    finalStatus.innerHTML = `<i class="fa-solid ${icon}"></i> [${status}] Fontes: ${source}.`;
+                    lastBotMessageContentElement.appendChild(finalStatus);
+                    isTyping = false;
+                    adjustTextareaHeight();
+                }
+            }
+            typeChar();
+        }
+
+        // Lógica de Envio de Mensagem
+        function sendMessage() {
+            const text = input.value.trim();
+            if (text === '' || isTyping) return;
+
+            // 1. Adiciona a mensagem do usuário
+            addMessage('user', text, false);
+            const userMessage = text;
+            
+            // 2. Limpa o input
+            input.value = '';
+            adjustTextareaHeight();
+            sendBtn.disabled = true;
+
+            // 3. Inicia a comunicação com o Backend
+            fetchRAGResponse(userMessage);
+        }
+
+        // Event Listeners
+        sendBtn.addEventListener('click', sendMessage);
+        input.addEventListener('input', adjustTextareaHeight);
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); 
+                sendMessage();
+            }
+        });
+
+        // Inicialização
+        adjustTextareaHeight();
+        scrollToBottom();
+    });
+</script>
+</body>
+</html>

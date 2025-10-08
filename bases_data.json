@@ -1,0 +1,132 @@
+{
+    "kernel_tech": {
+        "source": "Kernel Nebula 4.0 & SquareOS Docs",
+        "keywords": ["kernel", "nebula", "squareos", "arquitetura", "os", "threads", "modularidade", "agendador", "sistema de arquivos"],
+        "data": {
+            "o que é squareos?": "O **SquareOS** é um sistema operacional de alto desempenho que utiliza o **Kernel Nebula 4.0**, otimizado para tarefas de IA, processamento paralelo e ambientes virtuais isolados.",
+            "qual a versão atual do squareos?": "A versão estável mais recente é a **4.1 (Codinome: Equinox)**, com foco em segurança, desempenho de threads e compatibilidade com módulos de IA.",
+            "curiosidade sobre nebula": "O **Kernel Nebula 4.0** possui um agendador de tarefas 'Quantum' que reduz latência em 30% em comparação com versões anteriores e suporta preempção de alta prioridade.",
+            "como funciona a modularidade do kernel?": "Novos *drivers*, bibliotecas e recursos podem ser carregados dinamicamente sem reinicialização, graças à arquitetura modular do kernel.",
+            "o que é o agendador quantum?": "É um agendador de tarefas focado em priorizar processos críticos em tempo real, reduzindo jitter e aumentando a eficiência em sistemas de múltiplos núcleos.",
+            "o squareos é open source?": "O kernel base é open source sob licença modificada, enquanto módulos proprietários de IA e segurança permanecem fechados.",
+            "quais são os requisitos mínimos para rodar o nebula 4.1?": "Recomendamos 16GB de RAM, processador quad-core, GPU com suporte OpenGL 4.6 e SSD NVMe.",
+            "como faço um boot seguro?": "Use a flag `--safe-boot-mode` no gerenciador de boot EFI e habilite verificação de assinatura de drivers.",
+            "o que é um thread no kernel?": "Uma thread é uma sequência de instruções que pode ser executada independentemente pelo agendador, permitindo multitarefa eficiente.",
+            "qual o sistema de arquivos padrão?": "O **AstroFS**, otimizado para I/O rápido em SSDs NVMe, com suporte a snapshots e criptografia nativa AES-256.",
+            "como atualizar o kernel?": "Use `nebula-upgrade --kernel` no terminal com privilégios administrativos.",
+            "o que são módulos de extensão?": "Componentes opcionais que podem adicionar funcionalidades, como drivers de hardware, suporte a IA, sistemas de rede ou APIs de terceiros.",
+            "como o kernel gerencia memória?": "O Nebula usa *memory paging*, *swap inteligente* e otimizações de cache de threads para maximizar desempenho."
+        }
+    },
+    "dev_lineax": {
+        "source": "LINEAX Standard Library & Dev Tools",
+        "keywords": ["lineax", "janela", "api", "linguagem", "código", "programação", "sdk", "orion", "debug", "compilação"],
+        "data": {
+            "como criar uma janela?": "Use `Window.createGraphicsContext()` na LINEAX Standard Library para instanciar janelas com contexto gráfico.",
+            "qual a linguagem nativa do squareos?": "A linguagem nativa do SquareOS é **LINEAX**, projetada para concorrência segura, memória controlada e integração com hardware.",
+            "o que é lineax?": "Uma linguagem moderna para sistemas de baixo nível, com segurança de memória, tipagem forte e suporte a paralelismo e threads.",
+            "posso usar python no squareos?": "Sim, com módulos compatíveis otimizados para interagir com APIs nativas e recursos de I/O de alto desempenho.",
+            "qual o comando para compilar um projeto lineax?": "Use `lineax build <nome_do_projeto>` no terminal Orion.",
+            "o que é o sdk nebula?": "Kit de desenvolvimento que inclui bibliotecas, ferramentas de debug, templates e documentação para criar apps e drivers para SquareOS.",
+            "como faço debug em lineax?": "Use o `lx-debugger` integrado no ambiente Orion, com suporte a breakpoints, inspeção de threads e logging em tempo real.",
+            "como criar módulos personalizados?": "Implemente classes derivadas de `ModuleBase` e registre no kernel via `ModuleManager.register(<modulo>)`.",
+            "como acessar APIs do sistema?": "Utilize `SystemAPI.<funcao>` garantindo privilégios necessários para chamadas críticas de kernel."
+        }
+    },
+    "cybersecurity": {
+        "source": "Módulos de Segurança e Políticas de Dados",
+        "keywords": ["segurança", "criptografia", "firewall", "autenticação", "defender", "proteção", "guardian", "mfa", "antivirus"],
+        "data": {
+            "qual o padrão de criptografia usado?": "AES-256 GCM é utilizado para armazenamento e tráfego de dados sensíveis, garantindo confidencialidade e integridade.",
+            "como funciona o firewall?": "O **Guardian** opera no nível do kernel, usando regras dinâmicas baseadas em machine learning e análise heurística.",
+            "qual o método de autenticação padrão?": "OAuth 2.0 para tokens e Multi-Factor Authentication obrigatório para acessos críticos.",
+            "o que é o módulo guardian?": "Responsável por filtrar tráfego de rede, prevenir DDoS, bloquear intrusões e monitorar tentativas de acesso não autorizado.",
+            "como funciona sandboxing de apps?": "Cada aplicação roda isolada, com permissões restritas e monitoramento de memória e I/O em tempo real.",
+            "como realizar auditoria de segurança?": "Use `Guardian.audit <período>` para gerar relatórios de vulnerabilidades e logs de tentativas de intrusão.",
+            "como atualizar assinaturas de vírus?": "Execute `Guardian.update` regularmente para manter a proteção contra malware e ataques emergentes."
+        }
+    },
+    "world_history": {
+        "source": "Enciclopédia Histórica Global (Pré-1900)",
+        "keywords": ["historia", "roma", "egito", "antiguidade", "idade média", "cultura", "civilizações", "guerras"],
+        "data": {
+            "quem foi cleópatra?": "Cleópatra VII foi a última rainha ativa do Reino Ptolemaico do Egito.",
+            "o que foi o renascimento?": "Período (séculos XIV-XVI) de florescimento cultural, científico e artístico, enfatizando humanismo e recuperação de conhecimento greco-romano.",
+            "o que é o código de hamurabi?": "Conjunto de leis da antiga Mesopotâmia, um dos primeiros exemplos de codificação legal na história.",
+            "quando caiu o império romano do ocidente?": "Em 476 d.C., com a deposição do imperador Rômulo Augústulo.",
+            "o que foi a revolução francesa?": "Movimento de 1789-1799 que acabou com a monarquia absolutista e instituiu princípios de cidadania e direitos humanos.",
+            "quem foi alexandre o grande?": "Rei da Macedônia que conquistou um império do Egito à Índia, difundindo cultura helenística.",
+            "quem foi joana d'arc?": "Heroína francesa do século XV que liderou tropas contra a ocupação inglesa durante a Guerra dos Cem Anos.",
+            "o que foi a queda de Constantinopla?": "Em 1453, a cidade foi conquistada pelos Otomanos, marcando o fim do Império Bizantino e o início da expansão otomana."
+        }
+    },
+    "modern_events": {
+        "source": "Eventos e História Contemporânea (Pós-1900)",
+        "keywords": ["guerra", "séc xx", "contemporâneo", "política", "social", "internet", "tecnologia", "direitos humanos"],
+        "data": {
+            "quando ocorreu a segunda guerra mundial?": "1939-1945, envolvendo a maioria das nações do mundo e resultando na criação da ONU.",
+            "o que foi a guerra fria?": "Tensão geopolítica entre EUA e URSS (1947–1991), marcada por corrida armamentista, espionagem e disputas ideológicas.",
+            "quem foi nelson mandela?": "Líder anti-apartheid e primeiro presidente democraticamente eleito da África do Sul em 1994.",
+            "quando foi inventada a internet?": "ARPANET nos EUA, final dos anos 1960, conectando universidades e laboratórios de pesquisa.",
+            "o que aconteceu no 11 de setembro?": "Ataques terroristas em 2001, derrubando as Torres Gêmeas e causando milhares de mortes.",
+            "o que foi a revolução digital?": "Transformação tecnológica do final do século XX, marcada pela popularização de computadores, internet e smartphones.",
+            "quem foi martin luther king jr.?": "Líder do movimento pelos direitos civis nos EUA, defensor da igualdade racial e não-violência."
+        }
+    },
+    "science_physics": {
+        "source": "Ciências Exatas e Física Avançada",
+        "keywords": ["ciencia", "fisica", "quimica", "matemática", "universo", "astronomia", "energia", "matéria"],
+        "data": {
+            "o que é a teoria da relatividade?": "De Albert Einstein, trata da curvatura do espaço-tempo, mostrando que tempo e espaço são relativos à velocidade do observador.",
+            "qual o planeta mais próximo do sol?": "Mercúrio, o menor planeta do Sistema Solar.",
+            "o que é um buraco negro?": "Região do espaço com gravidade tão intensa que nada, nem luz, pode escapar.",
+            "o que são quarks?": "Partículas elementares que formam prótons e nêutrons, componentes da matéria.",
+            "o que é o número pi?": "Constante matemática (≈3,14159) representando a razão entre circunferência e diâmetro de um círculo.",
+            "qual o elemento mais abundante no universo?": "Hidrogênio, principal combustível das estrelas.",
+            "o que é energia escura?": "Força misteriosa que acelera a expansão do universo.",
+            "o que é matéria escura?": "Forma de matéria que não emite luz mas exerce efeito gravitacional em galáxias."
+        }
+    },
+    "bio_earth_science": {
+        "source": "Biologia, Geologia e Ciências da Terra",
+        "keywords": ["biologia", "geografia", "terra", "vida", "ecossistema", "corpo humano", "planeta", "evolução", "genética"],
+        "data": {
+            "o que é dna?": "Molécula que carrega as instruções genéticas de organismos vivos.",
+            "o que é fotossíntese?": "Processo das plantas que converte água e CO₂ em glicose e oxigênio usando luz solar.",
+            "qual a capital do brasil?": "Brasília.",
+            "o que são placas tectônicas?": "Grandes blocos da crosta terrestre cujo movimento causa terremotos e vulcões.",
+            "qual o maior oceano do mundo?": "Oceano Pacífico.",
+            "qual o maior órgão do corpo humano?": "Pele.",
+            "o que é um ecossistema?": "Conjunto de organismos e ambiente físico interagindo.",
+            "o que é a evolução biológica?": "Processo pelo qual espécies mudam ao longo do tempo através da seleção natural.",
+            "o que são genes?": "Segmentos de DNA que codificam proteínas e determinam características hereditárias."
+        }
+    },
+    "art_culture": {
+        "source": "Arte, Cultura e Filosofia",
+        "keywords": ["arte", "cultura", "literatura", "música", "filosofia", "livros", "movimentos", "pintura", "escultura"],
+        "data": {
+            "quem pintou a mona lisa?": "Leonardo da Vinci.",
+            "o que é o existencialismo?": "Corrente filosófica que enfatiza a existência individual e a responsabilidade pessoal.",
+            "quem escreveu dom quixote?": "Miguel de Cervantes.",
+            "o que é o barroco?": "Estilo artístico do século XVII, dramático e detalhado.",
+            "quem foi picasso?": "Pablo Picasso, co-fundador do Cubismo.",
+            "o que é o taoismo?": "Tradição chinesa que enfatiza viver em harmonia com o Tao.",
+            "o que é o modernismo?": "Movimento cultural do início do século XX que rompeu com tradições clássicas em arte e literatura.",
+            "quem foi vincent van gogh?": "Pintor pós-impressionista famoso por obras como 'Noite Estrelada'.",
+            "o que é a música clássica?": "Estilo musical europeu entre os séculos XVIII e XIX, com estruturas formais como sinfonias e concertos."
+        }
+    },
+    "programming_general": {
+        "source": "Referências de Programação Moderna",
+        "keywords": ["programação", "algoritmo", "estrutura de dados", "API", "framework", "compilador", "IDE", "debug"],
+        "data": {
+            "o que é uma API?": "Interface que permite que softwares diferentes se comuniquem.",
+            "o que é um algoritmo?": "Sequência de passos para resolver um problema ou realizar uma tarefa.",
+            "o que é programação orientada a objetos?": "Paradigma baseado em classes e objetos para organizar código.",
+            "o que é um framework?": "Conjunto de ferramentas e bibliotecas que facilitam o desenvolvimento de aplicações.",
+            "o que é uma IDE?": "Ambiente de desenvolvimento integrado, com editor de código, compilador e depurador.",
+            "o que é versionamento?": "Controle de versões de código, geralmente com Git, permitindo histórico e colaboração."
+        }
+    }
+}
